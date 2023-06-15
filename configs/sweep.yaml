@@ -1,0 +1,33 @@
+program: main.py
+method: grid
+metric:
+  name: val_loss
+  goal: minimize
+
+parameters:
+  optimizer.init_args.lr:
+    values: [ 0.0001, 0.001, 0.01, 0.1 ]
+  data.hparams.batch_size:
+    values: [ 2, 4, 8, 16 ]
+  model.hparams.embed_dim:
+    values: [ 32, 64, 128, 256 ]
+
+early_terminate:
+  type: hyperband
+  min_iter: 10
+
+command:
+  - ${interpreter}
+  - ${program}
+  - "fit"
+  - "--trainer"
+  - "configs/trainer.yaml"
+  - "--model"
+  - "configs/model.yaml"
+  - "--data"
+  - "configs/data.yaml"
+  - "--optimizer"
+  - "configs/optimizer.yaml"
+  - "--config"
+  - ${args_json}
+

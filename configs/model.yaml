@@ -1,0 +1,8 @@
+hparams:
+  ckpt_path: /path/to/logs/
+  some_int: 2048
+  some_list: [ 0.5, 0.5, 0.5, 0.5 ]
+  loss:
+    - class_path: CrossEntropyLoss
+      init_args:
+        something: ...

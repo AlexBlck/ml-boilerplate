@@ -1,0 +1,5 @@
+hparams:
+  artifact: username/project/dataset-name:alias
+  batch_size: 8
+  num_workers: 4
+  other: ...
