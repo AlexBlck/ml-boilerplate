@@ -2,12 +2,12 @@ import os
 from os.path import join
 from pathlib import Path
 
-import boto3
+# import boto3  # for uploading to S3
 import wandb
 from pytorch_lightning.cli import LightningCLI
 
-from data import MyAwesomeDataModule
-from model import MyAwesomeModel
+from .data import MyAwesomeDataModule
+from .model import MyAwesomeModel
 
 
 class MyLightningCLI(LightningCLI):
@@ -27,23 +27,26 @@ class MyLightningCLI(LightningCLI):
     def after_fit(self):
         # Upload model to S3
         best_ckpt_path = Path(self.trainer.checkpoint_callback.best_model_path)
-        file_path = best_ckpt_path.parent
-        file_name = best_ckpt_path.name
-        s3 = boto3.client("s3")
-        s3_path = f"/path/in/s3/bucket/{file_path}/{file_name}"
-        s3.upload_file(
-            best_ckpt_path,
-            "s3-bucket-name",
-            s3_path,
-        )
+        best_ckpt_path = f"file://{best_ckpt_path}"
+
+        # Uncomment to upload to S3
+        # file_path = best_ckpt_path.parent
+        # file_name = best_ckpt_path.name
+        # s3 = boto3.client("s3")
+        # s3_bucket_name = "s3-bucket-name"
+        # s3_path = f"/path/in/s3/bucket/{file_path}/{file_name}"
+        # s3.upload_file(
+        #     best_ckpt_path,
+        #     s3_bucket_name,
+        #     s3_path,
+        # )
+        # best_ckpt_path = f"s3://{s3_bucket_name}/{s3_path}"
 
         # Log model artifact to wandb
         model_artifact = wandb.Artifact(
             "my-awesome-model", type="model", metadata={"some-tag": 123}
         )
-        model_artifact.add_reference(
-            f"s3://s3-bucket-name/{s3_path}", name="model.ckpt"
-        )
+        model_artifact.add_reference(best_ckpt_path, name="model.ckpt")
         self.wandb_run.log_artifact(model_artifact)
 
         # Run test

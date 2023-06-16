@@ -1,5 +1,7 @@
 hparams:
   artifact: username/project/dataset-name:alias
+  data_root: /path/where/to/save/data
   batch_size: 8
   num_workers: 4
+  img_size: 512
   other: ...
