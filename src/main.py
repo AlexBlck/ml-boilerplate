@@ -44,7 +44,7 @@ class MyLightningCLI(LightningCLI):
 
         # Log model artifact to wandb
         model_artifact = wandb.Artifact(
-            "my-awesome-model", type="model", metadata={"some-tag": 123}
+            "my-awesome-model", type="model", metadata={"awesome-tag": 123}
         )
         model_artifact.add_reference(best_ckpt_path, name="model.ckpt")
         self.wandb_run.log_artifact(model_artifact)

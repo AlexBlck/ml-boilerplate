@@ -1,1 +1,1 @@
-wandb sweep --project my_cool_project configs/sweep.yaml
+wandb sweep --project my_awesome_project configs/sweep.yaml
