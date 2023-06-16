@@ -1,10 +1,10 @@
 from torchmetrics import Metric
 from torchmetrics.classification import MulticlassConfusionMatrix, MulticlassStatScores
 
-__all__ = ["MyMetricsWrapper"]
+__all__ = ["MyAwesomeMetricsWrapper"]
 
 
-class MyMetricsWrapper:
+class MyAwesomeMetricsWrapper:
     def __init__(self, num_classes) -> None:
         self.num_classes = num_classes
         self.confusion_matrix = MulticlassConfusionMatrix(

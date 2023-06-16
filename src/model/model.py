@@ -9,7 +9,7 @@ from torchvision.transforms.functional import to_pil_image
 from torchvision.utils import make_grid
 
 from .logging import SummaryImg
-from .metrics import MyMetricsWrapper
+from .metrics import MyAwesomeMetricsWrapper
 
 __all__ = ["MyAwesomeModel"]
 
@@ -18,7 +18,7 @@ class MyAwesomeModel(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
         self.save_hyperparameters(hparams)
-        self.metrics = MyMetricsWrapper(self.hparams.n_classes)
+        self.metrics = MyAwesomeMetricsWrapper(self.hparams.n_classes)
         self.summary_img = SummaryImg(self.hparams.n_classes)
 
         # TODO: Define model layers here

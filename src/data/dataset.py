@@ -43,6 +43,7 @@ class MyAwesomeDataModule(LightningDataModule):
             splits = ["val"]
         elif stage == "predict":
             splits = ["predict"]
+
         # Initialize datasets
         self.datasets = {
             split: MyAwesomeDataset(
@@ -53,11 +54,15 @@ class MyAwesomeDataModule(LightningDataModule):
             for split in splits
         }
 
+        # Samplers
+        self.samplers = {split: None for split in splits}
+
     def train_dataloader(self):
         return DataLoader(
             self.datasets["train"],
             num_workers=self.hparams.num_workers,
             batch_size=self.hparams.batch_size,
+            sampler=self.samplers["train"],
         )
 
     def val_dataloader(self):
@@ -65,6 +70,7 @@ class MyAwesomeDataModule(LightningDataModule):
             self.datasets["val"],
             num_workers=self.hparams.num_workers,
             batch_size=self.hparams.batch_size,
+            sampler=self.samplers["val"],
         )
 
     def test_dataloader(self):
@@ -72,6 +78,7 @@ class MyAwesomeDataModule(LightningDataModule):
             self.datasets["test"],
             num_workers=self.hparams.num_workers,
             batch_size=self.hparams.batch_size,
+            sampler=self.samplers["test"],
         )
 
     def predict_dataloader(self):
@@ -79,6 +86,7 @@ class MyAwesomeDataModule(LightningDataModule):
             self.datasets["predict"],
             num_workers=self.hparams.num_workers,
             batch_size=self.hparams.batch_size,
+            sampler=self.samplers["predict"],
         )
 
 
@@ -95,7 +103,8 @@ class MyAwesomeDataset(Dataset):
     def __getitem__(self, idx):
         sample = {}
         # TODO: Implement your data loading logic here
-        sample["image"] = self.transforms(image, split=self.split)
+        # sample["image"] = ...
+        sample = self.transforms(sample, split=self.split)
         return sample
 
     def __len__(self):

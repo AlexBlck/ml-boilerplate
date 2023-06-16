@@ -16,4 +16,4 @@ callbacks:
 logger:
   - class_path: WandbLogger
     init_args:
-      project: wandb-project
+      project: wandb-awesome-project
