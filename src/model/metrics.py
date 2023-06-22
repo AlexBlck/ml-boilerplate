@@ -1,5 +1,6 @@
 from torchmetrics import Metric
-from torchmetrics.classification import MulticlassConfusionMatrix, MulticlassStatScores
+from torchmetrics.classification import (MulticlassConfusionMatrix,
+                                         MulticlassStatScores)
 
 __all__ = ["MyAwesomeMetricsWrapper"]
 
