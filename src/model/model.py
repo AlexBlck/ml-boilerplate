@@ -19,7 +19,7 @@ class MyAwesomeModel(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters(hparams)
         self.metrics = MyAwesomeMetricsWrapper(self.hparams.n_classes)
-        self.summary_img = SummaryImg(self.hparams.n_classes)
+        self.summary_img = SummaryImg(self.hparams.n_classes, self.logger)
 
         # TODO: Define model layers here
         # self.out = nn.Conv2d(2, self.hparams.n_classes, kernel_size=1)
@@ -50,16 +50,7 @@ class MyAwesomeModel(pl.LightningModule):
 
         # Log images (less frequently than every step)
         if batch_idx % self.hparams.log_freq == 0:
-            imgs = [
-                self.summary_img(
-                    x[i].cpu(),
-                    y[i].cpu().numpy(),
-                    y_hat[i].cpu().numpy(),
-                )
-                for i in range(len(x))
-            ]
-            grid = make_grid(imgs, nrow=4, padding=6, pad_value=1)
-            self.logger.log_image(f"{stage}_images", [to_pil_image(grid)])
+            self.summary_img(x, y, y_hat, stage=stage)
 
         return loss
 
